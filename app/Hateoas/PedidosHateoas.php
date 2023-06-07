@@ -34,4 +34,15 @@ class PedidosHateoas
     {
         return $this->link('pedidos.destroy', ['id' => $pedidos->id]);
     }
+
+    public function produtos(Pedidos $pedido): ?Link
+    {
+        return $this->link('pedidos.showProducts', ['pedidos' => $pedido->id]);
+    }
+
+    public function clientes(Pedidos $pedido): ?Link
+    {
+        return $this->link('pedidos.showClients', ['pedidos' => $pedido->id]);
+    }
+
 }
