@@ -14,7 +14,7 @@ class Produtos extends Model
     protected $factory = ProdutosFactory::class;
     protected $fillable = ['nome', 'preco', 'foto'];
 
-    // Relacionamento com Pedidos
+    // Relacionamento com PedidosResource
     public function pedidos()
     {
         return $this->hasMany(Pedidos::class, 'codigo_produto', 'id');

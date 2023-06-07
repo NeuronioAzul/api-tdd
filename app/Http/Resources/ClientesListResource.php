@@ -2,11 +2,14 @@
 
 namespace App\Http\Resources;
 
+use GDebrauwer\Hateoas\Traits\HasLinks;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClientesResource extends JsonResource
+class ClientesListResource extends JsonResource
 {
+    use HasLinks;
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +17,10 @@ class ClientesResource extends JsonResource
      */
     public function toArray(Request $request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            '_links' => $this->links(),
+        ];
     }
 }
