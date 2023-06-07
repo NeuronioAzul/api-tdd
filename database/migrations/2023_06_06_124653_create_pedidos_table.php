@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cliente_id');
-            $table->unsignedBigInteger('produto_id');
+            $table->unsignedBigInteger('codigo_do_cliente');
+            $table->unsignedBigInteger('codigo_do_produto');
             $table->date('data_criacao');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->foreign('produto_id')->references('id')->on('produtos');
+            $table->foreign('codigo_do_cliente')->references('id')->on('clientes');
+            $table->foreign('codigo_do_produto')->references('id')->on('produtos');
         });
     }
 

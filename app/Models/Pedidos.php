@@ -12,17 +12,18 @@ class Pedidos extends Model
     use HasFactory, SoftDeletes;
 
     protected $factory = PedidosFactory::class;
-    protected $fillable = ['codigo_cliente', 'codigo_produto', 'data_criacao'];
+    protected $fillable = ['codigo_do_cliente', 'codigo_do_produto', 'data_criacao'];
 
     // Relacionamento com Cliente
     public function clientes()
     {
-        return $this->belongsTo(Clientes::class, 'codigo_cliente', 'id');
+        return $this->hasOne(Clientes::class, 'id', 'codigo_do_cliente');
     }
 
     // Relacionamento com Produto
     public function produtos()
     {
-        return $this->belongsTo(Produtos::class, 'codigo_produto', 'id');
+        return $this->hasOne(Produtos::class, 'id', 'codigo_do_produto');
+        // return $this->belongsTo(Produtos::class, 'codigo_do_produto', 'id');
     }
 }
