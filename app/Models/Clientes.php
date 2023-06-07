@@ -14,10 +14,10 @@ class Clientes extends Model
     protected $factory = ClientesFactory::class;
     protected $fillable = ['nome', 'email', 'telefone', 'data_nascimento', 'endereco', 'complemento', 'bairro', 'cep', 'data_cadastro'];
 
-    // realacionament with Pedidos
+    // realacionamento com Pedidos
     public function pedidos()
     {
-        return $this->hasMany(Pedidos::class, 'codigo_cliente', 'id');
+        return $this->belongsTo(Pedidos::class, 'codigo_do_cliente', 'id');
     }
 
 }
