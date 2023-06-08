@@ -6,7 +6,7 @@ use GDebrauwer\Hateoas\Traits\HasLinks;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PedidosResource extends JsonResource
+class ClientesListResource extends JsonResource
 {
     use HasLinks;
 
@@ -15,8 +15,12 @@ class PedidosResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
+    public function toArray(Request $request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'nome' => $this->nome,
+            '_links' => $this->links(),
+        ];
     }
 }

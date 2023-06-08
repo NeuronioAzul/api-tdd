@@ -2,12 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Brick\Money\Money;
 use GDebrauwer\Hateoas\Traits\HasLinks;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProdutosResource extends JsonResource
+class PedidosListResource extends JsonResource
 {
     use HasLinks;
 
@@ -18,11 +17,15 @@ class ProdutosResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'nome' => $this->nome,
-            'preco' => $this->preco,
-            'foto' => $this->foto,
+            'codigo_do_cliente' => $this->codigo_do_cliente,
+            'codigo_do_produto' => $this->codigo_do_produto,
+            'data_criacao' => $this->data_criacao,
+            'produto' => $this->produtos,
+            'cliente' => $this->clientes,
+            '_links' => $this->links()
         ];
     }
 }
