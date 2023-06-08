@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('telefone');
-            $table->date('data_nascimento');
+            $table->date('data_de_nascimento');
             $table->string('endereco');
             $table->string('complemento')->nullable();
             $table->string('bairro');
             $table->string('cep');
-            $table->timestamp('data_cadastro')->default(now());
+            $table->timestamp('data_de_cadastro')->default(now());
             $table->softDeletes();
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('codigo_do_cliente');
             $table->unsignedBigInteger('codigo_do_produto');
-            $table->date('data_criacao');
+            $table->date('data_da_criacao');
             $table->softDeletes();
             $table->timestamps();
 
