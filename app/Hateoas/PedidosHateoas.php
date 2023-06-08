@@ -42,7 +42,7 @@ class PedidosHateoas
 
     public function clientes(Pedidos $pedido): ?Link
     {
-        return $this->link('pedidos.showClients', ['pedidos' => $pedido->id]);
+        return $this->link('pedidos.showCostumers', ['pedidos' => $pedido->id]);
     }
 
 }
