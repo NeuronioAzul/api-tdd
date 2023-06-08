@@ -34,7 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
                 Route::get('/{id}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
                 Route::post('/', 'store')->name('store');
-                Route::put('/{id}', 'update')->name('update');
+                Route::post('/{id}', 'update')->name('update');
                 Route::patch('/{id}', 'update')->name('update');
             });
         });

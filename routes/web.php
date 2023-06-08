@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Image;
+use Intervention\Image\Image;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +16,5 @@ use Image;
 
 Route::get('storage/{filename}', function ($filename)
 {
-    return Image::make(storage_path('public/' . $filename))->response();
+    return (new Image())->make(storage_path('public/' . $filename))->response();
 });
