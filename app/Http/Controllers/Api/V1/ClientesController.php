@@ -10,8 +10,7 @@ use App\Http\Resources\ClientesResource;
 use App\Models\Clientes;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Response;
 
 class ClientesController extends Controller
 {
@@ -75,17 +74,30 @@ class ClientesController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  int  $clientes
+     * @param  UpdateClientesRequest  $request
+     * @return JsonResponse
      */
-    public function update(UpdateClientesRequest $request, Clientes $clientes)
+    public function update(int $clientes, Request $request)
     {
-        //
+        Clientes::query()->find($clientes)->update($request->all());
+
+        return response()->json(
+            ClientesResource::make(
+                Clientes::query()->findOrFail($clientes)
+            )
+        )
+            ->setStatusCode(201, 'Updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  int  $clientes
+     * @return Response
      */
-    public function destroy(int $clientes)
+    public function destroy(int $clientes): Response
     {
         Clientes::destroy($clientes);
         return response()->noContent();
