@@ -12,7 +12,17 @@ class Clientes extends Model
     use HasFactory, SoftDeletes;
 
     protected $factory = ClientesFactory::class;
-    protected $fillable = ['nome', 'email', 'telefone', 'data_nascimento', 'endereco', 'complemento', 'bairro', 'cep', 'data_cadastro'];
+    protected $fillable = [
+        'nome',
+        'email',
+        'telefone',
+        'data_de_nascimento',
+        'endereco',
+        'complemento',
+        'bairro',
+        'cep',
+        'data_de_cadastro'
+    ];
 
     // realacionamento com Pedidos
     public function pedidos()

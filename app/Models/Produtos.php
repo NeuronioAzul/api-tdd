@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Money;
 use Database\Factories\ProdutosFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,9 @@ class Produtos extends Model
 
     protected $factory = ProdutosFactory::class;
     protected $fillable = ['nome', 'preco', 'foto'];
+    protected $casts = [
+        'preco' => Money::class,
+    ];
 
     // Relacionamento com PedidosResource
     public function pedidos()
