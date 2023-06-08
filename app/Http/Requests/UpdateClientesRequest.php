@@ -11,7 +11,7 @@ class UpdateClientesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,25 @@ class UpdateClientesRequest extends FormRequest
      */
     public function rules(): array
     {
+        $method = $this->method();
+
+        if ($method == 'PUT' || $method == 'POST') {
+            $isRequiredOrSometimes = 'required';
+        } else {
+            $isRequiredOrSometimes = 'sometimes';
+        }
+
         return [
-            //
+            'nome' => "$isRequiredOrSometimes|string|max:255",
+            'email' => "$isRequiredOrSometimes|email|unique:clientes",
+            'telefone' => "$isRequiredOrSometimes|string|max:20",
+            'data_de_nascimento' => "$isRequiredOrSometimes|date",
+            'endereco' => "$isRequiredOrSometimes|string|max:255",
+            'complemento' => 'nullable|string|max:255',
+            'bairro' => "$isRequiredOrSometimes|string|max:255",
+            'cep' => "$isRequiredOrSometimes|string|max:10",
+            'data_de_cadastro' => "$isRequiredOrSometimes|date",
         ];
     }
+
 }
