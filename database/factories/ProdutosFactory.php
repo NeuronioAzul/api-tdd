@@ -19,10 +19,11 @@ class ProdutosFactory extends Factory
      */
     public function definition(): array
     {
+        $pastel = $this->faker->unique(false, 1000)->pastelName();
         return [
-            'nome' => $this->faker->unique(false, 100)->pastelName(),
+            'nome' => $pastel,
             'preco' => $this->faker->randomFloat(2, 3, 10),
-            'foto' => $this->faker->imageUrl(300, 250, 'food', true, null, false, 'png')
+            'foto' => $this->faker->imageUrl(600, 450, null, false, $pastel, true, 'png')
         ];
     }
 }

@@ -27,7 +27,7 @@ class PedidosFactory extends Factory
             'codigo_do_produto' => function () {
                 return Produtos::all()->random()->id;
             },
-            'data_criacao' => $this->faker->date(),
+            'data_da_criacao' => $this->faker->dateTimeThisMonth(),
         ];
     }
 }

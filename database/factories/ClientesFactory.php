@@ -34,12 +34,12 @@ class ClientesFactory extends Factory
             'nome' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'telefone' => $this->faker->phoneNumber,
-            'data_nascimento' => $this->faker->date(),
+            'data_de_nascimento' => $this->faker->date(),
             'endereco' => $this->faker->address,
             'complemento' => $this->faker->optional()->secondaryAddress,
             'bairro' => $this->faker->citySuffix,
             'cep' => $this->faker->postcode,
-            'data_cadastro' => now(),
+            'data_de_cadastro' => now(),
         ];
     }
 }
