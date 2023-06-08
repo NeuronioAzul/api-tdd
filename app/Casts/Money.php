@@ -2,6 +2,7 @@
 
 namespace App\Casts;
 
+use Brick\Money\Money as BMMoney;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,7 @@ class Money implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return \Brick\Money\Money::of($attributes['preco'], 'BRL')->formatTo('pt_BR');
+        return BMMoney::of($attributes['preco'], 'BRL')->formatTo('pt_BR');
     }
 
     /**
@@ -24,7 +25,7 @@ class Money implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if (! $value instanceof \Brick\Money\Money) {
+        if (!$value instanceof BMMoney) {
             return $value;
         }
         return $value->abs();
