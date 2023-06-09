@@ -22,7 +22,9 @@ class StoreProdutosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nome' => 'required|string|max:255',
+            'preco' => 'required|numeric',
+            'foto' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

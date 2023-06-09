@@ -21,8 +21,18 @@ class UpdateProdutosRequest extends FormRequest
      */
     public function rules(): array
     {
+        $method = $this->method();
+
+        if ($method == 'POST') {
+            $isRequiredOrSometimes = 'required';
+        } else {
+            $isRequiredOrSometimes = 'sometimes';
+        }
+
         return [
-            //
+            'nome' => "$isRequiredOrSometimes|string|max:255",
+            'preco' => "$isRequiredOrSometimes|numeric",
+            'foto' => "$isRequiredOrSometimes|file|mimes:jpeg,png,jpg,gif,svg|max:2048",
         ];
     }
 }
