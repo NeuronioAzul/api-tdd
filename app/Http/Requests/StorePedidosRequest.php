@@ -22,7 +22,8 @@ class StorePedidosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'codigo_do_cliente' => 'required|exists:clientes,id',
+            'codigo_do_produto' => 'required|exists:produtos,id',
         ];
     }
 }

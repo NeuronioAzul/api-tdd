@@ -28,12 +28,12 @@ class PedidosController extends Controller
                 'data' => $pedidosListResource,
                 'pagination' => [
                     'links' =>
-                        [
-                            'first' => $pedidos->url(1),
-                            'last' => $pedidos->url($pedidos->lastPage()),
-                            'prev' => $pedidos->previousPageUrl(),
-                            'next' => $pedidos->nextPageUrl(),
-                        ],
+                    [
+                        'first' => $pedidos->url(1),
+                        'last' => $pedidos->url($pedidos->lastPage()),
+                        'prev' => $pedidos->previousPageUrl(),
+                        'next' => $pedidos->nextPageUrl(),
+                    ],
                     'meta' => [
                         'current_page' => $pedidos->currentPage(),
                         'from' => $pedidos->firstItem(),
@@ -54,10 +54,12 @@ class PedidosController extends Controller
      */
     public function store(StorePedidosRequest $request): JsonResponse
     {
-        return response()->json(
-            PedidosResource::make(Pedidos::create($request->all())),
-            201
-        );
+         $pedido = new Pedidos();
+         $pedido->codigo_do_cliente = $request->input('codigo_do_cliente');
+         $pedido->codigo_do_produto = $request->input('codigo_do_produto');
+         $pedido->save();
+
+        return response()->json(['message' => 'Pedido criado com sucesso'], 201);
     }
 
     /**
