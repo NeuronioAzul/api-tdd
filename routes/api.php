@@ -16,10 +16,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::prefix('clientes')->group(function () {
         Route::controller(ClientesController::class)->group(function () {
             Route::name('clientes.')->group(function () {
-                Route::get('/', 'index')->name('index');
+                Route::get('', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
-                Route::post('/', 'store')->name('store');
+                Route::post('', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
                 Route::patch('/{id}', 'update')->name('update');
             });
@@ -30,10 +30,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::prefix('produtos')->group(function () {
         Route::controller(ProdutosController::class)->group(function () {
             Route::name('produtos.')->group(function () {
-                Route::get('/', 'index')->name('index');
+                Route::get('', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
-                Route::post('/', 'store')->name('store');
+                Route::post('', 'store')->name('store');
                 Route::post('/{id}', 'update')->name('update');
                 Route::patch('/{id}', 'update')->name('update');
             });
@@ -45,10 +45,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::prefix('pedidos')->group(function () {
         Route::controller(PedidosController::class)->group(function () {
             Route::name('pedidos.')->group(function () {
-                Route::get('/', 'index')->name('index');
+                Route::get('', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
-                Route::post('/', 'store')->name('store');
+                Route::post('', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
                 Route::patch('/{id}', 'update')->name('update');
                 Route::get('{pedidos}/produtos', 'showProducts')->name('showProducts');
