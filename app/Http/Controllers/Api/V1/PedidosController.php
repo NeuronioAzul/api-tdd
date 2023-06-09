@@ -76,9 +76,16 @@ class PedidosController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePedidosRequest $request, Pedidos $pedidos)
+    public function update(int $pedidos, UpdatePedidosRequest $request)
     {
-        //
+        Pedidos::query()->find($pedidos)->update($request->all());
+
+        return response()->json(
+            PedidosResource::make(
+                Pedidos::query()->findOrFail($pedidos)
+            )
+        )
+            ->setStatusCode(201, 'Updated successfully');
     }
     /**
      * Remove the specified resource from storage.
