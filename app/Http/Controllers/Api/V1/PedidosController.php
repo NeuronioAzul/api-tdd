@@ -9,6 +9,7 @@ use App\Http\Resources\PedidosListResource;
 use App\Http\Resources\PedidosResource;
 use App\Models\Pedidos;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class PedidosController extends Controller
 {
@@ -77,15 +78,17 @@ class PedidosController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
+     *
+     * @param  int  $pedidos
+     * @return Response
      */
-    public function destroy(Pedidos $pedidos)
+    public function destroy(int $pedidos): Response
     {
-        //
+        Pedidos::destroy($pedidos);
+        return response()->noContent();
     }
-
 
     public function showProducts(Pedidos $pedidos)
     {
