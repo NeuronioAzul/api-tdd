@@ -24,6 +24,5 @@ class Pedidos extends Model
     public function produtos()
     {
         return $this->hasOne(Produtos::class, 'id', 'codigo_do_produto');
-        // return $this->belongsTo(Produtos::class, 'codigo_do_produto', 'id');
     }
 }

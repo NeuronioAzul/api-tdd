@@ -17,7 +17,6 @@ class PedidosListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return [
             'id' => $this->id,
             'codigo_do_cliente' => $this->codigo_do_cliente,
