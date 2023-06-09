@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePedidosRequest;
 use App\Http\Resources\PedidosListResource;
 use App\Http\Resources\PedidosResource;
 use App\Models\Pedidos;
+use Illuminate\Http\JsonResponse;
 
 class PedidosController extends Controller
 {
@@ -50,17 +51,23 @@ class PedidosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePedidosRequest $request)
+    public function store(StorePedidosRequest $request): JsonResponse
     {
-        //
+        return response()->json(
+            PedidosResource::make(Pedidos::create($request->all())),
+            201
+        );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Pedidos $pedidos)
+    public function show(int $pedidos): JsonResponse
     {
-        //
+        return response()->json(
+            PedidosResource::make(Pedidos::query()->findOrFail($pedidos)),
+            200
+        );
     }
 
     /**
