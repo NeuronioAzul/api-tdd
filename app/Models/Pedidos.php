@@ -17,13 +17,12 @@ class Pedidos extends Model
     // Relacionamento com Cliente
     public function clientes()
     {
-        return $this->hasOne(Clientes::class, 'id', 'codigo_do_cliente');
+        return $this->belongsTo(Clientes::class, 'cliente_id');
     }
 
-    // Relacionamento com Produto
-    public function produtos()
+    public function itensDosPedidos()
     {
-        return $this->hasOne(Produtos::class, 'id', 'codigo_do_produto');
-        // return $this->belongsTo(Produtos::class, 'codigo_do_produto', 'id');
+        return $this->hasMany(ItemsDosPedidos::class, 'pedido_id');
     }
+
 }

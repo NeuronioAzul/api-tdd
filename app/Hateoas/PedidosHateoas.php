@@ -35,14 +35,33 @@ class PedidosHateoas
         return $this->link('pedidos.destroy', ['id' => $pedidos->id]);
     }
 
-    public function produtos(Pedidos $pedido): ?Link
-    {
-        return $this->link('pedidos.showProducts', ['pedidos' => $pedido->id]);
-    }
-
     public function clientes(Pedidos $pedido): ?Link
     {
         return $this->link('pedidos.showCostumers', ['pedidos' => $pedido->id]);
+    }
+
+    public function itensDosPedidos(Pedidos $pedido): array
+    {
+        $itensDosPedidoa = $pedido->itensDosPedidos;
+
+        $links = [];
+
+        foreach ($itensDosPedidoa as $item) {
+            $links[] = $this->link('itens_dos_pedidos.show', ['id' => $item->produto_id]);
+        }
+
+        return $links;
+    }
+
+    public function cresteLinksPedidos()
+    {
+        $this->self();
+        $this->index();
+        $this->store();
+        $this->update();
+        $this->destroy();
+        $this->clientes();
+        $this->itensDosPedidos();
     }
 
 }
