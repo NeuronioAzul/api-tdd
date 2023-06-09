@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClientesRequest;
 use App\Http\Requests\UpdateClientesRequest;
-use App\Http\Resources\ClientesListResource;
+use App\Http\Resources\ClientesCollection;
 use App\Http\Resources\ClientesResource;
 use App\Models\Clientes;
 use Illuminate\Http\JsonResponse;
@@ -22,31 +22,10 @@ class ClientesController extends Controller
     {
         $query = Clientes::query();
         $clientes = $query->paginate(5);
-        $clientesListResource = ClientesListResource::collection($clientes);
+        $clientesListResource = new ClientesCollection($clientes);
 
         return response()->json(
-            [
-                'data' => $clientesListResource,
-                'pagination' => [
-                    'links' =>
-                        [
-                            'first' => $clientes->url(1),
-                            'last' => $clientes->url($clientes->lastPage()),
-                            'prev' => $clientes->previousPageUrl(),
-                            'next' => $clientes->nextPageUrl(),
-                        ],
-                    'meta' => [
-                        'current_page' => $clientes->currentPage(),
-                        'from' => $clientes->firstItem(),
-                        'last_page' => $clientes->lastPage(),
-                        'path' => $clientes->path(),
-                        'per_page' => $clientes->perPage(),
-                        'to' => $clientes->lastItem(),
-                        'total' => $clientes->total(),
-                    ],
-                ],
-            ],
-            200
+            $clientesListResource
         );
     }
 
@@ -67,8 +46,7 @@ class ClientesController extends Controller
     public function show(int $clientes): JsonResponse
     {
         return response()->json(
-            ClientesResource::make(Clientes::query()->findOrFail($clientes)),
-            200
+            ClientesResource::make(Clientes::query()->findOrFail($clientes))
         );
     }
 
@@ -79,16 +57,16 @@ class ClientesController extends Controller
      * @param  UpdateClientesRequest  $request
      * @return JsonResponse
      */
-    public function update(int $clientes, Request $request)
+    public function update(int $clientes, Request $request): JsonResponse
     {
         Clientes::query()->find($clientes)->update($request->all());
 
         return response()->json(
             ClientesResource::make(
                 Clientes::query()->findOrFail($clientes)
-            )
-        )
-            ->setStatusCode(201, 'Updated successfully');
+            ),
+            201
+        );
     }
 
     /**

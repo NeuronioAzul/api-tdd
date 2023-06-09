@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePedidosRequest;
 use App\Http\Requests\UpdatePedidosRequest;
-use App\Http\Resources\PedidosListResource;
+use App\Http\Resources\PedidosCollection;
 use App\Http\Resources\PedidosResource;
 use App\Models\Pedidos;
 use Illuminate\Http\JsonResponse;
@@ -21,31 +21,10 @@ class PedidosController extends Controller
     {
         $query = Pedidos::query();
         $pedidos = $query->paginate(5);
-        $pedidosListResource = PedidosListResource::collection($pedidos);
-
+        $pedidosListResource = new PedidosCollection($pedidos);
+        
         return response()->json(
-            [
-                'data' => $pedidosListResource,
-                'pagination' => [
-                    'links' =>
-                    [
-                        'first' => $pedidos->url(1),
-                        'last' => $pedidos->url($pedidos->lastPage()),
-                        'prev' => $pedidos->previousPageUrl(),
-                        'next' => $pedidos->nextPageUrl(),
-                    ],
-                    'meta' => [
-                        'current_page' => $pedidos->currentPage(),
-                        'from' => $pedidos->firstItem(),
-                        'last_page' => $pedidos->lastPage(),
-                        'path' => $pedidos->path(),
-                        'per_page' => $pedidos->perPage(),
-                        'to' => $pedidos->lastItem(),
-                        'total' => $pedidos->total(),
-                    ],
-                ],
-            ],
-            200
+            $pedidosListResource
         );
     }
 
@@ -54,10 +33,10 @@ class PedidosController extends Controller
      */
     public function store(StorePedidosRequest $request): JsonResponse
     {
-         $pedido = new Pedidos();
-         $pedido->codigo_do_cliente = $request->input('codigo_do_cliente');
-         $pedido->codigo_do_produto = $request->input('codigo_do_produto');
-         $pedido->save();
+        $pedido = new Pedidos();
+        $pedido->codigo_do_cliente = $request->input('codigo_do_cliente');
+        $pedido->codigo_do_produto = $request->input('codigo_do_produto');
+        $pedido->save();
 
         return response()->json(['message' => 'Pedido criado com sucesso'], 201);
     }
@@ -68,8 +47,9 @@ class PedidosController extends Controller
     public function show(int $pedidos): JsonResponse
     {
         return response()->json(
-            PedidosResource::make(Pedidos::query()->findOrFail($pedidos)),
-            200
+            PedidosResource::make(
+                Pedidos::query()->findOrFail($pedidos)
+            )
         );
     }
 
@@ -83,10 +63,11 @@ class PedidosController extends Controller
         return response()->json(
             PedidosResource::make(
                 Pedidos::query()->findOrFail($pedidos)
-            )
-        )
-            ->setStatusCode(201, 'Updated successfully');
+            ),
+            201
+        );
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -102,18 +83,12 @@ class PedidosController extends Controller
     public function showProducts(Pedidos $pedidos)
     {
         $produtos = $pedidos->produtos;
-        return response()->json(
-            $produtos,
-            200
-        );
+        return response()->json($produtos);
     }
 
     public function showCostumers(Pedidos $pedidos)
     {
         $clientes = $pedidos->clientes;
-        return response()->json(
-            $clientes,
-            200
-        );
+        return response()->json($clientes);
     }
 }
