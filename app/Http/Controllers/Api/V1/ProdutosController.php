@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProdutosRequest;
+use App\Http\Requests\UpdateProdutosRequest;
 use App\Http\Resources\ProdutosListResource;
 use App\Http\Resources\ProdutosResource;
 use App\Models\Produtos;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ProdutosController extends Controller
 {
@@ -58,7 +60,7 @@ class ProdutosController extends Controller
      */
     public function store(StoreProdutosRequest $request): JsonResponse
     {
-        $fotoPath = $request->file('foto')->store('produtos');
+        $fotoPath = $request->file('foto')->store('public/produtos');
         $req = $request->all();
         $req['foto'] = $fotoPath;
 
@@ -86,22 +88,26 @@ class ProdutosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $produtos
-     * @param  StoreProdutosRequest  $request
+     * @param  UpdateProdutosRequest  $request
      * @return Response
      */
-    public function update(int $produtos, StoreProdutosRequest $request): Response
+    public function update(int $produtos, UpdateProdutosRequest $request): Response
     {
         $req = $request->all();
+        $produtos = Produtos::query()->find($produtos);
+
+        if ($produtos && isset($produtos->foto)) {
+            Storage::delete($produtos->foto);
+        }
 
         if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('produtos');
+            $fotoPath = $request->file('foto')->store('public/produtos');
             $req['foto'] = $fotoPath;
         }
 
-        $produtos = Produtos::query()->find($produtos);
         $produtos->update($req);
 
-        return response()->setStatusCode(201);
+        return response()->noContent(201);
     }
 
     /**
