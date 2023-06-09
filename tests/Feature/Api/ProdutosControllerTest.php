@@ -1,53 +1,46 @@
 <?php
 
-namespace Tests\Feature\Api;
+namespace Api;
 
-use App\Models\Clientes;
+use App\Models\Produtos;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ClientesControllerTest extends TestCase
+class ProdutosControllerTest extends TestCase
 {
     use RefreshDatabase;
     use DatabaseMigrations;
 
     /**
-     * Test get clientes endpoint
+     * Test get produtos endpoint
      */
-    public function test_get_clientes_endpoint(): void
+    public function test_get_produtos_endpoint(): void
     {
-        $response = $this->get('/api/v1/clientes', ['accept' => 'application/json']);
+        $response = $this->get('/api/v1/produtos', ['accept' => 'application/json']);
         $response->assertStatus(200);
     }
 
-    public function test_get_clientes_endpoint_with_creation_factory_data()
+    public function test_get_produtos_endpoint_with_creation_factory_data()
     {
-        Clientes::factory(5)->create();
-        $response = $this->getJson('/api/v1/clientes');
+        Produtos::factory(5)->create();
+        $response = $this->getJson('/api/v1/produtos');
         $response->assertStatus(200);
         $response->assertJsonCount(5, '0.data');
     }
 
-    public function test_get_clientes_endpoint_passing_id_json_format()
+    public function test_get_produtos_endpoint_passing_id_json_format()
     {
-        Clientes::factory(5)->create();
+        Produtos::factory(5)->create();
 
-        $response = $this->getJson('/api/v1/clientes/1');
+        $response = $this->getJson('/api/v1/produtos/1');
 
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'id',
             'nome',
-            'email',
-            'telefone',
-            'data_de_nascimento',
-            'endereco',
-            'complemento',
-            'bairro',
-            'cep',
-            'data_de_cadastro',
+            'foto',
             '_links' => [
                 '*' => [
                     'rel',
@@ -59,14 +52,14 @@ class ClientesControllerTest extends TestCase
     }
 
     /**
-     * Test the API endpoint for retrieving paginated list of clientes.
+     * Test the API endpoint for retrieving paginated list of produtos.
      *
      * @return void
      */
-    public function test_get_clientes_endpoint_json_format()
+    public function test_get_produtos_endpoint_json_format()
     {
-        $clientes = Clientes::factory(5)->create();
-        $response = $this->getJson('/api/v1/clientes');
+        $produtos = Produtos::factory(5)->create();
+        $response = $this->getJson('/api/v1/produtos');
         $response->assertStatus(200);
 
         // Assert the structure of the response JSON
@@ -77,14 +70,7 @@ class ClientesControllerTest extends TestCase
                     '*' => [
                         'id',
                         'nome',
-                        'email',
-                        'telefone',
-                        'data_de_nascimento',
-                        'endereco',
-                        'complemento',
-                        'bairro',
-                        'cep',
-                        'data_de_cadastro',
+                        'foto',
                         '_links' => [
                             '*' => [
                                 'rel',
