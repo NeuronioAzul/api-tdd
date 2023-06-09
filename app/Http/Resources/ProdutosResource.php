@@ -23,6 +23,7 @@ class ProdutosResource extends JsonResource
             'nome' => $this->nome,
             'preco' => $this->preco,
             'foto' => $this->foto,
+            '_links' => $this->links()
         ];
     }
 }
