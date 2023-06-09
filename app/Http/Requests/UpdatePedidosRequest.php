@@ -21,8 +21,17 @@ class UpdatePedidosRequest extends FormRequest
      */
     public function rules(): array
     {
+        $method = $this->method();
+
+        if ($method == 'PUT' || $method == 'POST') {
+            $isRequiredOrSometimes = 'required';
+        } else {
+            $isRequiredOrSometimes = 'sometimes';
+        }
+
         return [
-            //
+            'codigo_do_cliente' => "$isRequiredOrSometimes|exists:clientes,id",
+            'codigo_do_produto' => "$isRequiredOrSometimes|exists:produtos,id",
         ];
     }
 }
