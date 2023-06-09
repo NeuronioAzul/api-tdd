@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Brick\Money\Money;
 use GDebrauwer\Hateoas\Traits\HasLinks;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
