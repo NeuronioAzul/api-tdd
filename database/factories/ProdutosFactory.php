@@ -25,7 +25,7 @@ class ProdutosFactory extends Factory
 
         $pastel = $this->faker->unique(false, 1000)->pastelName();
 
-        $image = $this->faker->image($produtos_path, 600, 450, null, false, true, $pastel, false);
+        $image = $this->faker->imageUrl(600, 450, null, false, $pastel, false, 'png');
 
         return [
             'nome' => $pastel,
