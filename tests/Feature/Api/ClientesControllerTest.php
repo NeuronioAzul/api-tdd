@@ -114,4 +114,31 @@ class ClientesControllerTest extends TestCase
             ],
         ]);
     }
+
+
+
+
+
+
+//        $response->assertJson(function (AssertableJson $json) use ($clientes) {
+//            $json->whereType('0.id', 'integer');
+//
+//            $json->whereAllType([
+//                '0.id',
+//                'integer',
+//                '0.nome',
+//                'string'
+//            ]);
+//
+//            $json->hasAll(['0.current_page', '0.current_page', '0.current_page']);
+//
+//            $clientes = $clientes->first();
+//
+//            $json->whereAll([
+//                '0.id' => $clientes->id,
+//                '0.nome' => $clientes->nome
+//            ]);
+//        });
+
+
 }
