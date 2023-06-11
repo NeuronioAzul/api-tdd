@@ -4,17 +4,15 @@ namespace Tests\Unit\Api\V1;
 
 use App\Models\Clientes;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tests\CreatesApplication;
 
 class ClientesModelTest extends TestCase
 {
 
     use RefreshDatabase;
 
-    public function testModelClientesInsert()
+    public function testClienteCreateAndValidateInsertedData()
     {
         $data = [
             'nome' => 'John Doe',
@@ -36,35 +34,13 @@ class ClientesModelTest extends TestCase
         $this->assertEquals($data['email'], $cliente->email);
     }
 
-    public function testCriateClienteWithFactory()
+    public function testClienteCriateWithFactory()
     {
-        // criar um clientes usando a factory na model Clientes
         $cliente = Clientes::factory(1)->createOne();
         $this->assertInstanceOf(Clientes::class, $cliente);
-        //testar se o cliente foi criado
-        $this->assertInstanceOf(Clientes::class, $cliente);
-
-        // cadastrar cliente no banco de dados usando os dados passados via array
-        $clienteData = [
-            'nome' => 'John Doe',
-            'email' => 'aaa@sdss.com',
-            'telefone' => '123456789',
-            'data_de_nascimento' => '1990-01-01',
-            'endereco' => '123 Main Street',
-            'complemento' => 'Apartment 4B',
-            'bairro' => 'Central',
-            'cep' => '12345-678',
-            'data_de_cadastro' => now(),
-        ];
-
-        $cliente = Clientes::create($clienteData);
-
-        $this->assertInstanceOf(Clientes::class, $cliente);
-        $this->assertDatabaseHas('clientes', $clienteData);
-
     }
 
-    public function testCriarCliente()
+    public function testClienteCriate()
     {
         $clienteData = [
             'nome' => 'John Doe',
@@ -80,25 +56,22 @@ class ClientesModelTest extends TestCase
 
         $cliente = Clientes::create($clienteData);
 
-//        $cliente = new Clientes($clienteData);
-//        $cliente->save();
-
         $this->assertInstanceOf(Clientes::class, $cliente);
         $this->assertDatabaseHas('clientes', $clienteData);
     }
 
-    public function testAtualizarCliente()
+    public function testClienteUpdate()
     {
         $cliente = Clientes::factory()->create();
 
-        $novoNome = 'Jane Smith';
+        $novoNome = 'João das Couves';
         $cliente->nome = $novoNome;
         $cliente->save();
 
         $this->assertEquals($novoNome, $cliente->nome);
     }
 
-    public function testExcluirCliente()
+    public function testClienteSoftDelete()
     {
         $cliente = Clientes::factory()->create();
 
@@ -107,7 +80,7 @@ class ClientesModelTest extends TestCase
         $this->assertSoftDeleted('clientes', ['id' => $cliente->id]);
     }
 
-    public function testBuscarCliente()
+    public function testClienteSearchById()
     {
         $cliente = Clientes::factory()->create();
 
@@ -117,7 +90,7 @@ class ClientesModelTest extends TestCase
         $this->assertEquals($cliente->id, $clienteEncontrado->id);
     }
 
-    public function testAtualizarDataCadastro()
+    public function testClienteUpdateDataCadastro()
     {
         $cliente = Clientes::factory()->create();
 
@@ -130,15 +103,15 @@ class ClientesModelTest extends TestCase
         $this->assertEquals($novaDataCadastro, $clienteAtualizado->data_de_cadastro);
     }
 
-    public function testCampoObrigatorioNome()
+    public function testClienteRequiredFieldNome()
     {
         $this->expectException(QueryException::class);
 
         $cliente = new Clientes([
-            'nome' => 'John Doe',
+            // 'nome' => 'John Doe',
             'email' => 'john@example.com',
             'telefone' => '123456789',
-            'data_de_nascimento' => '202311/022226/1222220', // Formato inválido de data
+            'data_de_nascimento' => '2000-01-01',
             'endereco' => '123 Street',
             'complemento' => '',
             'bairro' => 'Central',
@@ -148,25 +121,95 @@ class ClientesModelTest extends TestCase
         $cliente->save();
     }
 
-    public function testFormatoDataNascimentoInvalido()
+    public function testClienteRequiredFieldEmail()
     {
-        // Cenário de teste
-        $data = [
+        $this->expectException(QueryException::class);
+
+        $cliente = new Clientes([
             'nome' => 'John Doe',
-            'email' => 'john@example.com',
+//            'email' => 'john@example.com',
             'telefone' => '123456789',
-            'data_de_nascimento' => '202311/022226/1222220', // Formato inválido de data
+            'data_de_nascimento' => '2000-01-01',
             'endereco' => '123 Street',
             'complemento' => '',
             'bairro' => 'Central',
             'cep' => '12345',
             "data_de_cadastro" => "2023-06-11 03:46:20",
-        ];
-
-        $cliente = Clientes::create($data);
-
-        $this->assertFalse($cliente);
-        $this->assertDatabaseMissing('clientes', ['nome' => 'John Doe']);
+        ]);
+        $cliente->save();
     }
+
+    public function testClienteRequiredFieldTelefone()
+    {
+        $this->expectException(QueryException::class);
+
+        $cliente = new Clientes([
+            'nome' => 'John Doe',
+            'email' => 'john@example.com',
+//            'telefone' => '123456789',
+            'data_de_nascimento' => '2000-01-01',
+            'endereco' => '123 Street',
+            'complemento' => '',
+            'bairro' => 'Central',
+            'cep' => '12345',
+            "data_de_cadastro" => "2023-06-11 03:46:20",
+        ]);
+        $cliente->save();
+    }
+
+    public function testClienteRequiredFieldDataDeNascimento()
+    {
+        $this->expectException(QueryException::class);
+
+        $cliente = new Clientes([
+            'nome' => 'John Doe',
+            'email' => 'john@example.com',
+            'telefone' => '123456789',
+//            'data_de_nascimento' => '2000-01-01',
+            'endereco' => '123 Street',
+            'complemento' => '',
+            'bairro' => 'Central',
+            'cep' => '12345',
+            "data_de_cadastro" => "2023-06-11 03:46:20",
+        ]);
+        $cliente->save();
+    }
+
+    public function testClienteRequiredFieldBairro()
+    {
+        $this->expectException(QueryException::class);
+
+        $cliente = new Clientes([
+            'nome' => 'John Doe',
+            'email' => 'john@example.com',
+            'telefone' => '123456789',
+            'data_de_nascimento' => '2000-01-01',
+            'endereco' => '123 Street',
+            'complemento' => '',
+//            'bairro' => 'Central',
+            'cep' => '12345',
+            "data_de_cadastro" => "2023-06-11 03:46:20",
+        ]);
+        $cliente->save();
+    }
+
+    public function testClienteRequiredFieldCep()
+    {
+        $this->expectException(QueryException::class);
+
+        $cliente = new Clientes([
+            'nome' => 'John Doe',
+            'email' => 'john@example.com',
+            'telefone' => '123456789',
+            'data_de_nascimento' => '2000-01-01',
+            'endereco' => '123 Street',
+            'complemento' => '',
+            'bairro' => 'Central',
+//            'cep' => '12345',
+            "data_de_cadastro" => "2023-06-11 03:46:20",
+        ]);
+        $cliente->save();
+    }
+
 }
 
