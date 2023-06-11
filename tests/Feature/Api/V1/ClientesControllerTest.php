@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api\V1;
 
 use App\Models\Clientes;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
@@ -11,15 +10,14 @@ use Tests\TestCase;
 class ClientesControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use DatabaseMigrations;
 
-    public function testGetClientesEndpoint(): void
+    public function testClientesEndpointGet(): void
     {
-        $response = $this->get('/api/v1/clientes', ['accept' => 'application/json']);
+        $response = $this->getJson('/api/v1/clientes');
         $response->assertStatus(200);
     }
 
-    public function testGetClientesEndpointWithCreationFactoryData()
+    public function testClientesEndpointGetWithCreationFactoryData()
     {
         Clientes::factory(5)->create();
         $response = $this->getJson('/api/v1/clientes');
@@ -27,11 +25,11 @@ class ClientesControllerTest extends TestCase
         $response->assertJsonCount(5, '0.data');
     }
 
-    public function testGetClientesEndpointSelectOne()
+    public function testClientesEndpointGetSelectOne()
     {
         $cliente = Clientes::factory(1)->createOne();
 
-        $response = $this->getJson('/api/v1/clientes/' . $cliente->id);
+        $response = $this->getJson('/api/v1/clientes/'.$cliente->id);
 
         $response->assertStatus(200);
 
@@ -74,10 +72,10 @@ class ClientesControllerTest extends TestCase
                 "complemento" => $cliente->complemento,
                 "bairro" => $cliente->bairro,
                 "cep" => $cliente->cep,
-                "data_de_cadastro" => $cliente->data_de_cadastro->toDateTimeString(),
+                "data_de_cadastro" => $cliente->data_de_cadastro,
                 "_links" => [
                     [
-                        'href' => 'http://localhost/api/v1/clientes/' . $cliente->id,
+                        'href' => 'http://localhost/api/v1/clientes/'.$cliente->id,
                         'rel' => 'self',
                         'type' => 'GET',
                     ],
@@ -92,12 +90,12 @@ class ClientesControllerTest extends TestCase
                         'type' => 'POST',
                     ],
                     [
-                        'href' => 'http://localhost/api/v1/clientes/' . $cliente->id,
+                        'href' => 'http://localhost/api/v1/clientes/'.$cliente->id,
                         'rel' => 'update',
                         'type' => 'PATCH',
                     ],
                     [
-                        'href' => 'http://localhost/api/v1/clientes/' . $cliente->id,
+                        'href' => 'http://localhost/api/v1/clientes/'.$cliente->id,
                         'rel' => 'destroy',
                         'type' => 'DELETE',
                     ],
@@ -106,7 +104,7 @@ class ClientesControllerTest extends TestCase
         });
     }
 
-    public function testGetClientesEndpointSelectOneJsonFormatHATEOAS()
+    public function testClientesEndpointGetSelectOneJsonFormatHATEOAS()
     {
         Clientes::factory()->createOne();
 
@@ -135,7 +133,7 @@ class ClientesControllerTest extends TestCase
         ]);
     }
 
-    public function testGetClientesEndpointFiveItensPaginatedJsonFormat()
+    public function testClientesEndpointGetFiveItensPaginatedJsonFormat()
     {
         $clientes = Clientes::factory(5)->create();
         $response = $this->getJson('/api/v1/clientes');
@@ -187,82 +185,178 @@ class ClientesControllerTest extends TestCase
         ]);
     }
 
-    // public function testPostClientesEndpoint()
-    // {
-    //     $cliente = Clientes::factory(1)->makeOne()->toArray();
+    public function testClientesEndpointPostToStore()
+    {
+        $cliente = Clientes::factory(1)->makeOne()->toArray();
 
-    //     dd($cliente);
+        $response = $this->postJson('api/v1/clientes', $cliente);
 
-    //     $response = $this->postJson('/api/v1/clientes', $cliente);
+        $response->assertStatus(201);
 
-    //     $response->assertStatus(201);
+        $response->assertJson(function (AssertableJson $json) use ($cliente) {
+            $json->hasAll(
+                [
+                    'id',
+                    'nome',
+                    'email',
+                    'telefone',
+                    'data_de_nascimento',
+                    'endereco',
+                    'complemento',
+                    'bairro',
+                    'cep',
+                    'data_de_cadastro'
+                ]
+            );
 
-    //     $response->assertJson(function (AssertableJson $json) use ($cliente) {
-    //         $json->hasAll('id')->etc();
-    //         $json->whereAll([
-    //             'id' => $cliente['id'],
-    //             'nome' => $cliente['nome'],
-    //             'email' => $cliente['email'],
-    //             'telefone' => $cliente['telefone'],
-    //             'data_de_nascimento' => $cliente['data_de_nascimento'],
-    //             'endereco' => $cliente['endereco'],
-    //             'complemento' => $cliente['complemento'],
-    //             'bairro' => $cliente['bairro'],
-    //             'cep' => $cliente['cep'],
-    //             'data_de_cadastro' => $cliente['data_de_cadastro'],
-    //             '_links' => [
-    //                 [
-    //                     'href' => 'http://localhost/api/v1/clientes/' . $cliente['id'],
-    //                     'rel' => 'self',
-    //                     'type' => 'GET',
-    //                 ],
-    //                 [
-    //                     'href' => 'http://localhost/api/v1/clientes',
-    //                     'rel' => 'index',
-    //                     'type' => 'GET',
-    //                 ],
-    //                 [
-    //                     'href' => 'http://localhost/api/v1/clientes',
-    //                     'rel' => 'store',
-    //                     'type' => 'POST',
-    //                 ],
-    //                 [
-    //                     'href' => 'http://localhost/api/v1/clientes/' . $cliente['id'],
-    //                     'rel' => 'update',
-    //                     'type' => 'PATCH',
-    //                 ],
-    //                 [
-    //                     'href' => 'http://localhost/api/v1/clientes/' . $cliente['id'],
-    //                     'rel' => 'destroy',
-    //                     'type' => 'DELETE',
-    //                 ],
-    //             ],
-    //         ]);
-    //     });
-    // }
+            $json->whereAll([
+                'id' => 1,
+                'nome' => $cliente['nome'],
+                'email' => $cliente['email'],
+                'telefone' => $cliente['telefone'],
+                'data_de_nascimento' => $cliente['data_de_nascimento'],
+                'endereco' => $cliente['endereco'],
+                'complemento' => $cliente['complemento'],
+                'bairro' => $cliente['bairro'],
+                'cep' => $cliente['cep'],
+                'data_de_cadastro' => $cliente['data_de_cadastro'],
+                '_links' => [
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'self',
+                        'type' => 'GET',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes'),
+                        'rel' => 'index',
+                        'type' => 'GET',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes'),
+                        'rel' => 'store',
+                        'type' => 'POST',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'update',
+                        'type' => 'PATCH',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'destroy',
+                        'type' => 'DELETE',
+                    ],
+                ],
+            ])->etc();
+        });
+    }
 
+    public function testClientesEndpointPut()
+    {
+        $nCliente = Clientes::factory(1)->createOne();
 
+        $arrCliente = Clientes::factory(1)->makeOne()->toArray();
 
+        $response = $this->putJson('api/v1/clientes/'.$nCliente->id, $arrCliente);
 
-    //        $response->assertJson(function (AssertableJson $json) use ($clientes) {
-    //            $json->whereType('0.id', 'integer');
-    //
-    //            $json->whereAllType([
-    //                '0.id',
-    //                'integer',
-    //                '0.nome',
-    //                'string'
-    //            ]);
-    //
-    //            $json->hasAll(['0.current_page', '0.current_page', '0.current_page']);
-    //
-    //            $clientes = $clientes->first();
-    //
-    //            $json->whereAll([
-    //                '0.id' => $clientes->id,
-    //                '0.nome' => $clientes->nome
-    //            ]);
-    //        });
+        $response->assertStatus(201);
 
+        $response->assertJson(function (AssertableJson $json) use ($arrCliente) {
+            $json->hasAll(
+                [
+                    'id',
+                    'nome',
+                    'email',
+                    'telefone',
+                    'data_de_nascimento',
+                    'endereco',
+                    'complemento',
+                    'bairro',
+                    'cep',
+                    'data_de_cadastro'
+                ]
+            );
 
+            $json->whereAll([
+                'id' => 1,
+                'nome' => $arrCliente['nome'],
+                'email' => $arrCliente['email'],
+                'telefone' => $arrCliente['telefone'],
+                'data_de_nascimento' => $arrCliente['data_de_nascimento'],
+                'endereco' => $arrCliente['endereco'],
+                'complemento' => $arrCliente['complemento'],
+                'bairro' => $arrCliente['bairro'],
+                'cep' => $arrCliente['cep'],
+                'data_de_cadastro' => $arrCliente['data_de_cadastro'],
+                '_links' => [
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'self',
+                        'type' => 'GET',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes'),
+                        'rel' => 'index',
+                        'type' => 'GET',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes'),
+                        'rel' => 'store',
+                        'type' => 'POST',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'update',
+                        'type' => 'PATCH',
+                    ],
+                    [
+                        'href' => url('/api/v1/clientes/1'),
+                        'rel' => 'destroy',
+                        'type' => 'DELETE',
+                    ],
+                ],
+            ])->etc();
+        });
+    }
+
+    public function testClientesEndpointPatch()
+    {
+        Clientes::factory(1)->createOne();
+
+        $cliente = [
+            'nome' => 'Zé das Coves',
+        ];
+
+        $response = $this->patchJson('api/v1/clientes/1', $cliente);
+
+        $response->assertStatus(201);
+
+        $response->assertJson(function (AssertableJson $json) use ($cliente) {
+            $json->hasAll(
+                [
+                    'id',
+                    'nome',
+                    'email',
+                    'telefone',
+                    'data_de_nascimento',
+                    'endereco',
+                    'complemento',
+                    'bairro',
+                    'cep',
+                    'data_de_cadastro'
+                ]
+            )->etc();
+
+            $json->where('nome', $cliente['nome']);
+        });
+    }
+
+    public function testClientesEndpointDelete()
+    {
+        $cliente = Clientes::factory(1)->createOne();
+
+        $response = $this->deleteJson('/api/v1/clientes/'.$cliente->id);
+
+        $response->assertStatus(204);
+    }
 }
