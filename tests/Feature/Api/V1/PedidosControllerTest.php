@@ -134,36 +134,4 @@ class PedidosControllerTest extends TestCase
         ]);
     }
 
-//
-//    public function testYourControllerMethod()
-//    {
-//        $response = $this->post('/api/v1/pedidos', [
-//            'your_field' => 'not a valid json',
-//        ]);
-//
-//        $response->assertStatus(400)
-//            ->assertJson(['error' => 'Invalid JSON']);
-//    }
-
-//        $response->assertJson(function (AssertableJson $json) use ($pedidos) {
-//            $json->whereType('0.id', 'integer');
-//
-//            $json->whereAllType([
-//                '0.id',
-//                'integer',
-//                '0.nome',
-//                'string'
-//            ]);
-//
-//            $json->hasAll(['0.current_page', '0.current_page', '0.current_page']);
-//
-//            $pedidos = $pedidos->first();
-//
-//            $json->whereAll([
-//                '0.id' => $pedidos->id,
-//                '0.nome' => $pedidos->nome
-//            ]);
-//        });
-
-
 }
