@@ -56,7 +56,7 @@ class ProdutosModelTest extends TestCase
         $this->assertDatabaseHas('produtos', $data);
     }
 
-    public function testProdutoDelete()
+    public function testProdutoSoftDelete()
     {
         $produto = Produtos::factory()->create();
 
