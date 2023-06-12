@@ -34,13 +34,13 @@ class ClientesModelTest extends TestCase
         $this->assertEquals($data['email'], $cliente->email);
     }
 
-    public function testClienteCriateWithFactory()
+    public function testClienteCreateWithFactory()
     {
         $cliente = Clientes::factory(1)->createOne();
         $this->assertInstanceOf(Clientes::class, $cliente);
     }
 
-    public function testClienteCriate()
+    public function testClienteCreate()
     {
         $clienteData = [
             'nome' => 'John Doe',
