@@ -3,6 +3,8 @@
 namespace Tests\Unit\Api\V1;
 
 use App\Models\Clientes;
+use App\Models\Pedidos;
+use App\Models\Produtos;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -34,13 +36,28 @@ class ClientesModelTest extends TestCase
         $this->assertEquals($data['email'], $cliente->email);
     }
 
-    public function testClienteCriateWithFactory()
+    public function testClienteCreateWithFactory()
     {
         $cliente = Clientes::factory(1)->createOne();
         $this->assertInstanceOf(Clientes::class, $cliente);
     }
 
-    public function testClienteCriate()
+//    public function testClienteShoudHavePedido()
+//    {
+//        $cliente = Clientes::factory()->create();
+//        $produto = Produtos::factory()->create();
+//        $pedido = Pedidos::factory()->create([
+//            'codigo_do_cliente' => $cliente->id,
+//            'codigo_do_produto'=>$produto->id,
+//        ]);
+//
+//        dd($cliente);
+//
+//        $this->assertInstanceOf(Pedidos::class, $cliente->pedidos);
+//    }
+
+
+    public function testClienteCreate()
     {
         $clienteData = [
             'nome' => 'John Doe',
@@ -210,6 +227,8 @@ class ClientesModelTest extends TestCase
         ]);
         $cliente->save();
     }
+
+
 
 }
 
