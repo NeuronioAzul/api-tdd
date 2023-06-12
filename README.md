@@ -1,4 +1,4 @@
-# Pastelaria - API TDD
+# Pastelaria - RESTFull API TDD
 
 <p align="center">
     <img src="./public/imagages-readme/logo2-no-bg.png" style="width: 100%;" alt="Pastelaria Logo">
