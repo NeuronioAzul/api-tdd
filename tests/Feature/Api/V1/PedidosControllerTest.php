@@ -49,8 +49,7 @@ class PedidosControllerTest extends TestCase
 
         $response->assertJsonStructure([
             'id',
-            'codigo_do_cliente',
-            'codigo_do_produto',
+            'cliente_id',
             "data_criacao",
             "produto" => [
                 "id",
@@ -101,8 +100,7 @@ class PedidosControllerTest extends TestCase
                 'data' => [
                     '*' => [
                         'id',
-                        'codigo_do_cliente',
-                        'codigo_do_produto',
+                        'cliente_id',
                         "data_criacao",
                         '_links' => [
                             '*' => [

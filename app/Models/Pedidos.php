@@ -5,6 +5,8 @@ namespace App\Models;
 use Database\Factories\PedidosFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pedidos extends Model
@@ -12,17 +14,17 @@ class Pedidos extends Model
     use HasFactory, SoftDeletes;
 
     protected $factory = PedidosFactory::class;
-    protected $fillable = ['codigo_do_cliente', 'codigo_do_produto', 'data_criacao'];
+    protected $fillable = ['cliente_id', 'data_criacao'];
 
     // Relacionamento com Cliente
-    public function clientes()
+    public function clientes(): HasOne
     {
-        return $this->hasOne(Clientes::class, 'id', 'codigo_do_cliente');
+        return $this->hasOne(Clientes::class, 'id', 'cliente_id');
     }
 
-    // Relacionamento com Produto
-    public function produtos()
+    // Relacionamento com PedidoItens
+    public function pedidoItens(): HasMany
     {
-        return $this->hasOne(Produtos::class, 'id', 'codigo_do_produto');
+        return $this->hasMany(PedidoItens::class, 'pedido_id', 'id');
     }
 }

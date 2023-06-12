@@ -21,11 +21,8 @@ class PedidosFactory extends Factory
     public function definition(): array
     {
         return [
-            'codigo_do_cliente' => function () {
+            'cliente_id' => function () {
                 return Clientes::all()->random()->id;
-            },
-            'codigo_do_produto' => function () {
-                return Produtos::all()->random()->id;
             },
             'data_da_criacao' => $this->faker->dateTimeThisMonth(),
         ];

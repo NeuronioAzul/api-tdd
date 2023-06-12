@@ -57,7 +57,7 @@ class ClientesController extends Controller
      * @param  UpdateClientesRequest  $request
      * @return JsonResponse
      */
-    public function update(int $clientes, Request $request): JsonResponse
+    public function update(UpdateClientesRequest $request, Clientes $clientes): JsonResponse
     {
         Clientes::query()->find($clientes)->update($request->all());
 

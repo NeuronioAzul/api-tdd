@@ -27,7 +27,7 @@ class Clientes extends Model
     // realacionamento com Pedidos
     public function pedidos()
     {
-        return $this->belongsTo(Pedidos::class, 'codigo_do_cliente', 'id');
+        return $this->belongsTo(Pedidos::class, 'cliente_id', 'id');
     }
 
 }

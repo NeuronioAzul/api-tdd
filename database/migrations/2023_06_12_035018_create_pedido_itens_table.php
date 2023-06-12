@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('pedido_itens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cliente_id');
-            $table->timestamp('data_da_criacao')->default(now());
+            $table->foreignId('pedido_id')->constrained('pedidos');
+            $table->foreignId('produto_id')->constrained('produtos');
+            $table->integer('quantidade');
             $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('cliente_id')->references('id')->on('clientes');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('pedido_itens');
     }
 };

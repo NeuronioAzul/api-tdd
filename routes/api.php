@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ClientesController;
+use App\Http\Controllers\Api\V1\PedidoItensController;
 use App\Http\Controllers\Api\V1\PedidosController;
 use App\Http\Controllers\Api\V1\ProdutosController;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +12,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+
+
 Route::group(['prefix' => 'v1'], function () {
+
+    Route::resource('pedidoitens', PedidoItensController::class);
+
     // CRUDL Clientes
     Route::prefix('clientes')->group(function () {
         Route::controller(ClientesController::class)->group(function () {

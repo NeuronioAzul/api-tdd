@@ -2,14 +2,11 @@
 
 namespace App\Http\Resources;
 
-use GDebrauwer\Hateoas\Traits\HasLinks;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PedidosResource extends JsonResource
+class PedidoItensResource extends JsonResource
 {
-    use HasLinks;
-
     /**
      * Transform the resource into an array.
      *
@@ -19,11 +16,11 @@ class PedidosResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'cliente_id' => $this->cliente_id,
-            'data_criacao' => $this->data_criacao,
-            'produto' => $this->produtos,
-            'cliente' => $this->clientes,
-            '_links' => $this->links()
+            'pedido_id' => $this->pedido_id,
+            'produto_id' => $this->produto_id,
+            'quantidade' => $this->quantidade,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

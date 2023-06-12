@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePedidosRequest extends FormRequest
+class UpdatePedidoItensRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,7 +22,9 @@ class StorePedidosRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cliente_id' => 'required|exists:clientes,id',
+            'pedido_id' => ['required', 'integer'],
+            'produto_id' => ['required', 'integer'],
+            'quantidade' => ['required', 'integer'],
         ];
     }
 }

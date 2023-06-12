@@ -18,9 +18,4 @@ class Produtos extends Model
         'preco' => Money::class,
     ];
 
-    // Relacionamento com PedidosResource
-    public function pedidos()
-    {
-        return $this->belongsTo(Pedidos::class, 'codigo_do_produto', 'id');
-    }
 }

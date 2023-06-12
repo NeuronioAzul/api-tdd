@@ -30,8 +30,7 @@ class UpdatePedidosRequest extends FormRequest
         }
 
         return [
-            'codigo_do_cliente' => "$isRequiredOrSometimes|exists:clientes,id",
-            'codigo_do_produto' => "$isRequiredOrSometimes|exists:produtos,id",
+            'cliente_id' => "$isRequiredOrSometimes|exists:clientes,id",
         ];
     }
 }

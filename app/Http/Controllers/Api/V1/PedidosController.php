@@ -22,7 +22,7 @@ class PedidosController extends Controller
         $query = Pedidos::query();
         $pedidos = $query->paginate(5);
         $pedidosListResource = new PedidosCollection($pedidos);
-        
+
         return response()->json(
             $pedidosListResource
         );
@@ -34,8 +34,7 @@ class PedidosController extends Controller
     public function store(StorePedidosRequest $request): JsonResponse
     {
         $pedido = new Pedidos();
-        $pedido->codigo_do_cliente = $request->input('codigo_do_cliente');
-        $pedido->codigo_do_produto = $request->input('codigo_do_produto');
+        $pedido->cliente_id = $request->input('cliente_id');
         $pedido->save();
 
         return response()->json(['message' => 'Pedido criado com sucesso'], 201);
