@@ -15,13 +15,13 @@ class ProdutosControllerTest extends TestCase
     /**
      * Test get produtos endpoint
      */
-    public function test_get_produtos_endpoint(): void
+    public function testGetProdutosEndpoint(): void
     {
         $response = $this->get('/api/v1/produtos', ['accept' => 'application/json']);
         $response->assertStatus(200);
     }
 
-    public function test_get_produtos_endpoint_with_creation_factory_data()
+    public function testGetProdutosEndpointWithCreationFactoryData()
     {
         Produtos::factory(5)->create();
         $response = $this->getJson('/api/v1/produtos');
@@ -29,7 +29,7 @@ class ProdutosControllerTest extends TestCase
         $response->assertJsonCount(5, '0.data');
     }
 
-    public function test_get_produtos_endpoint_passing_id_json_format()
+    public function testGetProdutosEndpointPassingIdJsonFormat()
     {
         Produtos::factory(5)->create();
 
@@ -56,7 +56,7 @@ class ProdutosControllerTest extends TestCase
      *
      * @return void
      */
-    public function test_get_produtos_endpoint_json_format()
+    public function testGetProdutosEndpointJsonFormat()
     {
         $produtos = Produtos::factory(5)->create();
         $response = $this->getJson('/api/v1/produtos');
