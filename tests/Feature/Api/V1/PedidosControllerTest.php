@@ -12,13 +12,13 @@ class PedidosControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_get_pedidos_v1_endpoint(): void
+    public function testGetPedidosV1Endpoint(): void
     {
         $response = $this->get('/api/v1/pedidos');
         $response->assertStatus(200);
     }
 
-    public function test_get_pedidos_v1_endpoint_json(): void
+    public function testGetPedidosV1EndpointJson(): void
     {
         $response = $this->getJson('/api/v1/pedidos');
         $response->assertStatus(200)
@@ -26,7 +26,7 @@ class PedidosControllerTest extends TestCase
             ->assertJson([]);
     }
 
-    public function test_get_pedidos_endpoint_paginated_with_five_itens()
+    public function testGetPedidosEndpointPaginatedWithFiveItens()
     {
         $clientes = Clientes::factory(5)->create();
         $produtos = Produtos::factory(5)->create();
@@ -37,7 +37,7 @@ class PedidosControllerTest extends TestCase
         $response->assertJsonCount(5, '0.data');
     }
 
-    public function test_get_pedidos_endpoint_with_id_return_one()
+    public function testGetPedidosEndpointWithIdReturnOne()
     {
         $clientes = Clientes::factory(5)->create();
         $produtos = Produtos::factory(5)->create();
@@ -86,7 +86,7 @@ class PedidosControllerTest extends TestCase
         ]);
     }
 
-    function test_get_pedidos_endpoint_json_format()
+    function testGetPedidosEndpointJsonFormat()
     {
         $clientes = Clientes::factory(5)->create();
         $produtos = Produtos::factory(5)->create();
